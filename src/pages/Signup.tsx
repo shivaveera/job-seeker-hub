@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { ArrowLeft, Mail } from "lucide-react";
 
 export default function Signup() {
   const [fullName, setFullName] = useState("");
@@ -32,17 +33,29 @@ export default function Signup() {
 
   if (sent) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background px-6">
-        <div className="max-w-sm text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent">
-            <span className="text-2xl">✉️</span>
+      <div className="relative flex min-h-screen items-center justify-center bg-[#0a0f0f] px-6">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(16,185,129,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.4) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+        <div className="relative z-10 max-w-sm text-center">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10">
+            <Mail className="h-7 w-7 text-emerald-400" />
           </div>
-          <h1 className="mb-2 text-2xl font-bold">Check your email</h1>
-          <p className="mb-6 text-muted-foreground">
-            We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account.
+          <h1 className="mb-2 text-2xl font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            Check your email
+          </h1>
+          <p className="mb-6 text-sm text-gray-400">
+            We sent a confirmation link to <span className="font-medium text-white">{email}</span>. Click it to activate your account.
           </p>
           <Link to="/login">
-            <Button variant="outline">Back to Login</Button>
+            <Button variant="ghost" className="text-gray-300 hover:bg-white/5 hover:text-white">
+              Back to Login
+            </Button>
           </Link>
         </div>
       </div>
@@ -50,55 +63,94 @@ export default function Signup() {
   }
 
   return (
-    <div className="flex min-h-screen">
-      <div className="hidden w-1/2 items-center justify-center bg-primary lg:flex">
-        <div className="max-w-md px-8 text-primary-foreground">
-          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-foreground/20">
-            <span className="text-xl font-bold">F1</span>
-          </div>
-          <h2 className="mb-4 text-3xl font-bold" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-            Start your career journey
-          </h2>
-          <p className="text-primary-foreground/80">
-            Join thousands of international students landing jobs in the US with F1Work.
-          </p>
+    <div className="relative flex min-h-screen items-center justify-center bg-[#0a0f0f] px-6">
+      {/* Background grid */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(16,185,129,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.4) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+      <div className="pointer-events-none absolute left-0 bottom-0 h-[500px] w-[500px] rounded-full bg-emerald-600/8 blur-[120px]" />
+
+      {/* Back nav */}
+      <Link to="/" className="absolute left-6 top-6 z-10">
+        <Button variant="ghost" size="sm" className="gap-2 text-gray-400 hover:bg-white/5 hover:text-white">
+          <ArrowLeft className="h-4 w-4" /> Back
+        </Button>
+      </Link>
+
+      {/* Logo */}
+      <div className="absolute left-6 top-6 z-10 ml-24 flex items-center gap-2.5 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600">
+          <span className="text-sm font-bold text-white">F1</span>
         </div>
+        <span className="text-xl font-bold tracking-tight text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          F1Work
+        </span>
       </div>
 
-      <div className="flex w-full items-center justify-center px-6 lg:w-1/2">
-        <div className="w-full max-w-sm">
-          <div className="mb-8 lg:hidden">
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <span className="text-sm font-bold text-primary-foreground">F1</span>
-              </div>
-              <span className="text-xl font-bold">F1Work</span>
-            </div>
-          </div>
-          <h1 className="mb-2 text-2xl font-bold">Create account</h1>
-          <p className="mb-8 text-sm text-muted-foreground">
+      <div className="relative z-10 w-full max-w-md">
+        <div className="rounded-xl border border-white/10 bg-[#0d1414] p-8">
+          <h1 className="mb-1 text-2xl font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            Create account
+          </h1>
+          <p className="mb-8 text-sm text-gray-400">
             Already have an account?{" "}
-            <Link to="/login" className="font-medium text-primary hover:underline">Sign in</Link>
+            <Link to="/login" className="font-medium text-emerald-400 hover:text-emerald-300 transition">Sign in</Link>
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="name">Full Name</Label>
-              <Input id="name" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="John Doe" required />
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-1.5">
+              <Label htmlFor="name" className="text-sm text-gray-300">Full Name</Label>
+              <Input
+                id="name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="John Doe"
+                required
+                className="border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+              />
             </div>
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required />
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-sm text-gray-300">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+                className="border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+              />
             </div>
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Min. 6 characters" required />
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-sm text-gray-300">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Min. 6 characters"
+                required
+                className="border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+              />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+              type="submit"
+              className="w-full rounded-lg border border-white/10 bg-white px-8 text-black hover:bg-gray-100"
+              disabled={loading}
+            >
               {loading ? "Creating account..." : "Create account"}
             </Button>
           </form>
         </div>
+
+        <p className="mt-6 text-center text-xs text-gray-500" style={{ fontFamily: "monospace" }}>
+          // JOIN 10,000+ STUDENTS
+        </p>
       </div>
     </div>
   );
