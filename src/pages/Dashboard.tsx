@@ -28,24 +28,24 @@ import {
 } from "recharts";
 
 const STATUS_COLORS: Record<string, string> = {
-  applied: "#6366f1",
-  interview_scheduled: "#f59e0b",
-  offer: "#22c55e",
-  rejected: "#ef4444",
+  applied: "#10b981",
+  interview_scheduled: "#14b8a6",
+  offer: "#34d399",
+  rejected: "#f87171",
   saved: "#6b7280",
-  got_email: "#06b6d4",
-  interview_done: "#a855f7",
+  got_email: "#2dd4bf",
+  interview_done: "#059669",
   no_response: "#374151",
 };
 
-const PIE_COLORS = ["#6366f1", "#22c55e", "#f59e0b", "#ef4444", "#06b6d4", "#a855f7", "#ec4899", "#374151"];
+const PIE_COLORS = ["#10b981", "#34d399", "#14b8a6", "#0d9488", "#2dd4bf", "#6ee7b7", "#86efac", "#374151"];
 
 const DOT_COLORS = [
   "bg-emerald-500",
-  "bg-blue-500",
-  "bg-purple-500",
-  "bg-orange-500",
-  "bg-pink-500",
+  "bg-teal-500",
+  "bg-emerald-400",
+  "bg-teal-400",
+  "bg-emerald-300",
   "bg-gray-500",
 ];
 
@@ -168,7 +168,7 @@ export default function Dashboard() {
         <div className="rounded-xl border border-white/10 bg-[#0d1414] p-5">
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-400">Overall Activity</p>
-            <Flame className="h-4 w-4 text-orange-400" />
+            <Flame className="h-4 w-4 text-emerald-400" />
           </div>
           <p className="mt-2 text-3xl font-bold text-white">{(appCount ?? 0) + (savedCount ?? 0)}</p>
           <div className="mt-1 flex items-center gap-2">
@@ -179,12 +179,12 @@ export default function Dashboard() {
         <div className="rounded-xl border border-white/10 bg-[#0d1414] p-5">
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-400">Active Applications</p>
-            <Users className="h-4 w-4 text-blue-400" />
+            <Users className="h-4 w-4 text-emerald-400" />
           </div>
           <p className="mt-2 text-3xl font-bold text-white">{appCount ?? 0}</p>
           <p className="mt-1 text-xs text-gray-500">Across all statuses</p>
           <div className="mt-2 h-1.5 w-full rounded-full bg-white/5">
-            <div className="h-full rounded-full bg-gradient-to-r from-blue-500 to-emerald-500" style={{ width: `${Math.min(100, (appCount ?? 0) * 10)}%` }} />
+            <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400" style={{ width: `${Math.min(100, (appCount ?? 0) * 10)}%` }} />
           </div>
         </div>
         <div className="rounded-xl border border-white/10 bg-[#0d1414] p-5">
@@ -217,13 +217,13 @@ export default function Dashboard() {
                   {i + 1}
                 </span>
                 <span className="flex-1 text-sm font-medium text-white">{cat.name}</span>
-                <Badge className={`border-0 text-[10px] ${isHot ? "bg-red-500/20 text-red-400" : "bg-orange-500/20 text-orange-400"}`}>
+                <Badge className={`border-0 text-[10px] ${isHot ? "bg-emerald-500/20 text-emerald-400" : "bg-teal-500/20 text-teal-300"}`}>
                   {isHot ? "🔥 Hot" : "🔥 Warm"}
                 </Badge>
                 <span className="text-xs text-gray-500">{cat.value} jobs</span>
                 <div className="h-1.5 w-20 rounded-full bg-white/5">
                   <div
-                    className={`h-full rounded-full ${isHot ? "bg-gradient-to-r from-red-500 to-orange-500" : "bg-gradient-to-r from-orange-500 to-yellow-500"}`}
+                    className={`h-full rounded-full ${isHot ? "bg-gradient-to-r from-emerald-500 to-teal-400" : "bg-gradient-to-r from-emerald-400 to-teal-300"}`}
                     style={{ width: `${pct}%` }}
                   />
                 </div>
@@ -247,7 +247,7 @@ export default function Dashboard() {
             </h2>
             <div className="flex items-center gap-4 text-xs text-gray-500">
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-blue-500" /> Applications
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" /> Applications
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Jobs Viewed
@@ -262,7 +262,7 @@ export default function Dashboard() {
               <Tooltip
                 contentStyle={{ background: "#0d1414", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "0.5rem", color: "#fff", fontSize: "0.75rem" }}
               />
-              <Bar dataKey="applications" fill="#6366f1" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="applications" fill="#34d399" radius={[4, 4, 0, 0]} />
               <Bar dataKey="views" fill="#10b981" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -318,7 +318,7 @@ export default function Dashboard() {
               const trend = pct > 30 ? "📈" : pct > 15 ? "—" : "📉";
               return (
                 <div key={cat.name} className="flex items-center gap-3 rounded-lg border border-white/5 bg-white/[0.02] px-4 py-3">
-                  <div className="h-4 w-4 shrink-0 rounded bg-blue-600" />
+                  <div className="h-4 w-4 shrink-0 rounded bg-emerald-500" />
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium text-white">{cat.name}</span>
@@ -330,7 +330,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div className="h-1.5 w-24 rounded-full bg-white/5">
-                    <div className="h-full rounded-full bg-blue-500" style={{ width: `${pct}%` }} />
+                    <div className="h-full rounded-full bg-emerald-500" style={{ width: `${pct}%` }} />
                   </div>
                   <span className="w-10 text-right text-sm font-semibold text-white">{pct}%</span>
                 </div>
@@ -345,9 +345,9 @@ export default function Dashboard() {
               <div className="flex items-center gap-1.5">
                 <span className="text-gray-500">Heat Intensity:</span>
                 <span className="h-2.5 w-2.5 rounded-full bg-gray-700" />
-                <span className="h-2.5 w-2.5 rounded-full bg-blue-800" />
-                <span className="h-2.5 w-2.5 rounded-full bg-blue-600" />
-                <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-900" />
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-700" />
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
               </div>
               <div className="flex items-center gap-3">
                 <span>📈 Rising</span>
