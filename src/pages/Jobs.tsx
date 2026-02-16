@@ -5,7 +5,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Search, MapPin, Building2, Clock, ExternalLink, Bookmark, BookmarkCheck, ChevronDown } from "lucide-react";
@@ -23,10 +22,7 @@ export default function Jobs() {
   const { data: jobs = [], isLoading } = useQuery({
     queryKey: ["jobs"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("jobs")
-        .select("*")
-        .order("posted_at", { ascending: false, nullsFirst: false });
+      const { data, error } = await supabase.from("jobs").select("*").order("posted_at", { ascending: false, nullsFirst: false });
       if (error) throw error;
       return data;
     },
@@ -57,20 +53,18 @@ export default function Jobs() {
   });
 
   const filteredJobs = jobs.filter((job) => {
-    const matchesSearch =
-      !search ||
-      job.job_title.toLowerCase().includes(search.toLowerCase()) ||
-      job.company_name?.toLowerCase().includes(search.toLowerCase()) ||
-      job.job_location?.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = !search || job.job_title.toLowerCase().includes(search.toLowerCase()) || job.company_name?.toLowerCase().includes(search.toLowerCase()) || job.job_location?.toLowerCase().includes(search.toLowerCase());
     const matchesWorkplace = workplaceFilter === "all" || job.workplace_type === workplaceFilter;
     const matchesExperience = experienceFilter === "all" || job.experience_level === experienceFilter;
     return matchesSearch && matchesWorkplace && matchesExperience;
   });
 
+  const activeFilters = (workplaceFilter !== "all" ? 1 : 0) + (experienceFilter !== "all" ? 1 : 0);
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Jobs</h1>
+        <h1 className="text-2xl font-bold text-foreground">Jobs</h1>
         <p className="text-sm text-muted-foreground">Browse F1/CPT/OPT-friendly positions</p>
       </div>
 
@@ -78,16 +72,11 @@ export default function Jobs() {
       <div className="flex flex-wrap gap-3">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search jobs, companies, locations..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
-          />
+          <Input placeholder="Search jobs, companies, locations..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9 bg-card border-border" />
         </div>
         <Select value={workplaceFilter} onValueChange={setWorkplaceFilter}>
-          <SelectTrigger className="w-[150px]"><SelectValue placeholder="Workplace" /></SelectTrigger>
-          <SelectContent>
+          <SelectTrigger className="w-[150px] bg-card border-border"><SelectValue placeholder="Workplace" /></SelectTrigger>
+          <SelectContent className="bg-popover border-border">
             <SelectItem value="all">All Types</SelectItem>
             <SelectItem value="remote">Remote</SelectItem>
             <SelectItem value="hybrid">Hybrid</SelectItem>
@@ -95,130 +84,99 @@ export default function Jobs() {
           </SelectContent>
         </Select>
         <Select value={experienceFilter} onValueChange={setExperienceFilter}>
-          <SelectTrigger className="w-[160px]"><SelectValue placeholder="Experience" /></SelectTrigger>
-          <SelectContent>
+          <SelectTrigger className="w-[160px] bg-card border-border"><SelectValue placeholder="Experience" /></SelectTrigger>
+          <SelectContent className="bg-popover border-border">
             <SelectItem value="all">All Levels</SelectItem>
             <SelectItem value="entry">Entry Level</SelectItem>
             <SelectItem value="mid">Mid Level</SelectItem>
             <SelectItem value="senior">Senior Level</SelectItem>
           </SelectContent>
         </Select>
+        {activeFilters > 0 && (
+          <Badge variant="secondary" className="self-center text-xs">{activeFilters} filter{activeFilters > 1 ? "s" : ""} active</Badge>
+        )}
       </div>
 
-      {/* Results count */}
+      {/* Count */}
       <p className="text-sm text-muted-foreground">{filteredJobs.length} jobs found</p>
 
-      {/* Job Cards */}
+      {/* Cards */}
       {isLoading ? (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="border-border animate-pulse">
-              <CardContent className="p-6"><div className="h-20 rounded bg-muted" /></CardContent>
-            </Card>
+            <div key={i} className="rounded-xl border border-border bg-card p-6 animate-pulse">
+              <div className="h-5 w-1/3 rounded bg-muted mb-3" />
+              <div className="h-4 w-1/2 rounded bg-muted" />
+            </div>
           ))}
         </div>
       ) : filteredJobs.length === 0 ? (
-        <Card className="border-border">
-          <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <Bookmark className="mb-4 h-12 w-12 text-muted-foreground/50" />
-            <h3 className="mb-2 text-lg font-semibold">No jobs found</h3>
-            <p className="text-sm text-muted-foreground">
-              {search ? "Try adjusting your search or filters" : "Jobs will appear here once they are uploaded"}
-            </p>
-          </CardContent>
-        </Card>
+        <div className="rounded-xl border border-border bg-card flex flex-col items-center justify-center py-16 text-center">
+          <Bookmark className="mb-4 h-12 w-12 text-muted-foreground/30" />
+          <h3 className="mb-2 text-lg font-semibold text-foreground">No jobs found</h3>
+          <p className="text-sm text-muted-foreground">{search ? "Try adjusting your search or filters" : "Jobs will appear here once they are uploaded"}</p>
+        </div>
       ) : (
         <div className="space-y-3">
           {filteredJobs.map((job) => (
             <Collapsible key={job.id} open={expandedJob === job.id} onOpenChange={(open) => setExpandedJob(open ? job.id : null)}>
-              <Card className="border-border transition-shadow hover:shadow-md">
-                <CardContent className="p-5">
+              <div className="rounded-xl border border-border bg-card transition-all duration-300 ease-out hover:border-accent-foreground/20 hover:shadow-lg hover:shadow-primary/5">
+                <div className="p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap mb-1">
-                        <h3 className="text-base font-semibold truncate">{job.job_title}</h3>
-                        {job.easy_apply && <Badge variant="secondary" className="text-xs">Easy Apply</Badge>}
+                        <h3 className="text-base font-semibold text-foreground truncate">{job.job_title}</h3>
+                        {job.easy_apply && <Badge className="text-xs bg-primary/10 text-primary border-0">Easy Apply</Badge>}
                       </div>
                       <div className="flex items-center gap-3 text-sm text-muted-foreground flex-wrap">
-                        {job.company_name && (
-                          <span className="flex items-center gap-1">
-                            <Building2 className="h-3.5 w-3.5" />{job.company_name}
-                          </span>
-                        )}
-                        {job.job_location && (
-                          <span className="flex items-center gap-1">
-                            <MapPin className="h-3.5 w-3.5" />{job.job_location}
-                          </span>
-                        )}
-                        {job.posted_at && (
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3.5 w-3.5" />{formatDistanceToNow(new Date(job.posted_at), { addSuffix: true })}
-                          </span>
-                        )}
+                        {job.company_name && <span className="flex items-center gap-1"><Building2 className="h-3.5 w-3.5" />{job.company_name}</span>}
+                        {job.job_location && <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{job.job_location}</span>}
+                        {job.posted_at && <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{formatDistanceToNow(new Date(job.posted_at), { addSuffix: true })}</span>}
                       </div>
                       <div className="mt-2 flex items-center gap-2 flex-wrap">
-                        {job.workplace_type && <Badge variant="outline" className="text-xs">{job.workplace_type}</Badge>}
-                        {job.employment_type && <Badge variant="outline" className="text-xs">{job.employment_type}</Badge>}
-                        {job.experience_level && <Badge variant="outline" className="text-xs">{job.experience_level}</Badge>}
-                        {job.category && <Badge variant="outline" className="text-xs">{job.category}</Badge>}
+                        {job.workplace_type && <Badge variant="outline" className="text-xs border-border">{job.workplace_type}</Badge>}
+                        {job.employment_type && <Badge variant="outline" className="text-xs border-border">{job.employment_type}</Badge>}
+                        {job.experience_level && <Badge variant="outline" className="text-xs border-border">{job.experience_level}</Badge>}
+                        {job.category && <Badge variant="outline" className="text-xs border-border">{job.category}</Badge>}
                         {(job.salary_min || job.salary_max) && (
-                          <Badge variant="secondary" className="text-xs">
-                            {job.salary_min && job.salary_max
-                              ? `$${job.salary_min.toLocaleString()} - $${job.salary_max.toLocaleString()}`
-                              : job.salary_min
-                              ? `From $${job.salary_min.toLocaleString()}`
-                              : `Up to $${job.salary_max!.toLocaleString()}`}
+                          <Badge className="text-xs bg-primary/10 text-primary border-0">
+                            {job.salary_min && job.salary_max ? `$${job.salary_min.toLocaleString()} - $${job.salary_max.toLocaleString()}` : job.salary_min ? `From $${job.salary_min.toLocaleString()}` : `Up to $${job.salary_max!.toLocaleString()}`}
                           </Badge>
                         )}
                       </div>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => toggleSave.mutate(job.id)}
-                        className={savedJobIds.includes(job.id) ? "text-primary" : "text-muted-foreground"}
-                      >
+                      <Button variant="ghost" size="icon" onClick={() => toggleSave.mutate(job.id)} className={savedJobIds.includes(job.id) ? "text-primary" : "text-muted-foreground"}>
                         {savedJobIds.includes(job.id) ? <BookmarkCheck className="h-4 w-4" /> : <Bookmark className="h-4 w-4" />}
                       </Button>
                       {job.apply_url && (
                         <a href={job.apply_url} target="_blank" rel="noopener noreferrer">
-                          <Button size="sm">Apply <ExternalLink className="ml-1 h-3 w-3" /></Button>
+                          <Button size="sm" className="hover-lift">Apply <ExternalLink className="ml-1 h-3 w-3" /></Button>
                         </a>
                       )}
                       <CollapsibleTrigger asChild>
                         <Button variant="ghost" size="icon">
-                          <ChevronDown className={`h-4 w-4 transition-transform ${expandedJob === job.id ? "rotate-180" : ""}`} />
+                          <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${expandedJob === job.id ? "rotate-180" : ""}`} />
                         </Button>
                       </CollapsibleTrigger>
                     </div>
                   </div>
+                </div>
 
-                  <CollapsibleContent>
-                    <div className="mt-4 border-t border-border pt-4">
-                      {job.description ? (
-                        <div className="prose prose-sm max-w-none text-sm text-muted-foreground whitespace-pre-wrap">
-                          {job.description}
-                        </div>
-                      ) : (
-                        <p className="text-sm text-muted-foreground italic">No description available</p>
-                      )}
-                      <div className="mt-4 flex gap-2">
-                        {job.job_url && (
-                          <a href={job.job_url} target="_blank" rel="noopener noreferrer">
-                            <Button variant="outline" size="sm">View Job <ExternalLink className="ml-1 h-3 w-3" /></Button>
-                          </a>
-                        )}
-                        {job.company_url && (
-                          <a href={job.company_url} target="_blank" rel="noopener noreferrer">
-                            <Button variant="outline" size="sm">Company <ExternalLink className="ml-1 h-3 w-3" /></Button>
-                          </a>
-                        )}
-                      </div>
+                <CollapsibleContent>
+                  <div className="border-t border-border px-5 pb-5 pt-4">
+                    {job.description ? (
+                      <div className="prose prose-sm max-w-none text-sm text-muted-foreground whitespace-pre-wrap">{job.description}</div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground italic">No description available</p>
+                    )}
+                    <div className="mt-4 flex gap-2">
+                      {job.job_url && <a href={job.job_url} target="_blank" rel="noopener noreferrer"><Button variant="outline" size="sm">View Job <ExternalLink className="ml-1 h-3 w-3" /></Button></a>}
+                      {job.company_url && <a href={job.company_url} target="_blank" rel="noopener noreferrer"><Button variant="outline" size="sm">Company <ExternalLink className="ml-1 h-3 w-3" /></Button></a>}
                     </div>
-                  </CollapsibleContent>
-                </CardContent>
-              </Card>
+                  </div>
+                </CollapsibleContent>
+              </div>
             </Collapsible>
           ))}
         </div>
