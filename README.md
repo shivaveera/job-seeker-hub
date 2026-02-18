@@ -1,73 +1,77 @@
-# Welcome to your Lovable project
+# Job Seeker Hub
 
-## Project info
+A modern, full-featured job seeker SaaS application built with React, TypeScript, and Supabase. It helps job seekers manage their job search from a single place — browse job listings, track applications, save favourite jobs, and maintain a personal profile.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- **Landing & Pricing pages** — public-facing pages introducing the product and plans
+- **Authentication** — sign up and log in with Supabase Auth
+- **Dashboard** — at-a-glance overview of your job search activity
+- **Jobs Feed** — browse and search available job listings
+- **Application Tracker** — keep track of every job you've applied to
+- **Saved Jobs** — bookmark jobs to review later
+- **Profile** — manage your personal information
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- [Vite](https://vitejs.dev/) — fast frontend build tool
+- [React 18](https://react.dev/) — UI library
+- [TypeScript](https://www.typescriptlang.org/) — type-safe JavaScript
+- [Tailwind CSS](https://tailwindcss.com/) — utility-first CSS framework
+- [shadcn/ui](https://ui.shadcn.com/) — accessible component library
+- [Supabase](https://supabase.com/) — backend-as-a-service (auth & database)
+- [TanStack Query](https://tanstack.com/query) — server-state management
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- [Node.js](https://nodejs.org/) (v18 or later recommended)
+- npm (comes with Node.js)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# 1. Clone the repository
+git clone https://github.com/shivaveera/job-seeker-hub.git
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# 2. Navigate into the project directory
+cd job-seeker-hub
 
-# Step 3: Install the necessary dependencies.
-npm i
+# 3. Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 4. Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at `http://localhost:8080` by default.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Available Scripts
 
-**Use GitHub Codespaces**
+| Script | Description |
+|---|---|
+| `npm run dev` | Start the development server |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run ESLint |
+| `npm test` | Run the test suite with Vitest |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Environment Variables
 
-## What technologies are used for this project?
+Create a `.env` file in the project root and add your Supabase credentials:
 
-This project is built with:
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Contributing
 
-## How can I deploy this project?
+1. Fork the repository and create a feature branch.
+2. Make your changes and ensure all tests pass (`npm test`).
+3. Submit a pull request describing your changes.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## License
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project is open source. See the repository for license details.
