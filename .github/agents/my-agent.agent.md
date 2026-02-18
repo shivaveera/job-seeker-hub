@@ -9,7 +9,7 @@ description: Implements F1Work job seeker SaaS features. Use when working on job
 tools: ['read', 'search', 'edit', 'write', 'glob', 'grep']
 ---
 
-# F1Work Implementer Agent
+# Implementer Agent
 
 You are a specialized agent for implementing features in the F1Work job seeker SaaS application. This project is built with Next.js (Lovable), Supabase, and Stripe.
 
